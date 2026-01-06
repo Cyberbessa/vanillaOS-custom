@@ -69,26 +69,24 @@ stages:
     type: shell
     commands:
       - |
-        # Install GNOME first-login script
-        install -Dm755 /dev/stdin /usr/local/bin/gnome-first-login.sh << 'EOF'
-        #!/usr/bin/env bash
-        set -euo pipefail
-
+        #!/usr/bin/env sh
+        set -eu
+        
         MARKER="$HOME/.config/.gnome-first-login-done"
-
+        
         # Run once per user
-        if [[ -f "$MARKER" ]]; then
+        if [ -f "$MARKER" ]; then
           exit 0
         fi
-
+        
         echo "[GNOME First Login] Applying user configuration…"
-
+        
         # Enable fractional scaling
         gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
-
+        
         # Close window keybind
         dconf write /org/gnome/desktop/wm/keybindings/close "['<Super>q', '<Alt>F4']"
-
+        
         # Declare custom keybindings
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "[
           '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/',
@@ -97,42 +95,41 @@ stages:
           '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/',
           '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/'
         ]"
-
+        
         # Nautilus
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Nautilus'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'nautilus --new-window'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Super>e'"
-
-        # Terminal (Blackbox)
+        
+        # Terminal
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Blackbox Terminal'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'blackbox-terminal'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding "'<Super>t'"
-
+        
         # Emojis
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Emojis'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'flatpak run it.mijorus.smile'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Super>.'"
-
+        
         # Gradia
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name "'Gradia Screenshot Utility'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command "'flatpak run be.alexandervanhee.gradia --screenshot'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Super>Print'"
-
+        
         # Firefox
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name "'Firefox'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command "'flatpak run org.mozilla.firefox'"
         dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding "'<Super>w'"
-
+        
         # Allow Rewaita colors to Flatpak apps
         flatpak override --user --filesystem=xdg-config/gtk-4.0:ro
         flatpak override --user --filesystem=xdg-config/gtk-3.0:ro
-
-        # Mark completion
+        
         mkdir -p "$HOME/.config"
         touch "$MARKER"
-
+        
         echo "[GNOME First Login] Configuration applied successfully."
-        EOF
+
 
       - |
         # Install systemd user service (runs once at first login)
