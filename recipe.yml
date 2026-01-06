@@ -65,59 +65,19 @@ stages:
         - com.usebottles.bottles
         - io.github.swordpuffin.rewaita
 
-  - name: create-first-login-script
+  - name: copy-files
     type: shell
     commands:
-      - mkdir -p /usr/local/bin
-      - |
-        cat > /usr/local/bin/gnome-first-login.sh << 'SCRIPTEND'
-        #!/usr/bin/env sh
-        set -eu
-        MARKER="$HOME/.config/.gnome-first-login-done"
-        if [ -f "$MARKER" ]; then exit 0; fi
-        echo "[GNOME First Login] Applying configuration..."
-        gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
-        dconf write /org/gnome/desktop/wm/keybindings/close "['<Super>q', '<Alt>F4']"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Nautilus'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'nautilus --new-window'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Super>e'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Terminal'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'blackbox-terminal'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding "'<Super>t'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Emojis'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'flatpak run it.mijorus.smile'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Super>.'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name "'Screenshot'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command "'flatpak run be.alexandervanhee.gradia --screenshot'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Super>Print'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name "'Firefox'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command "'flatpak run org.mozilla.firefox'"
-        dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding "'<Super>w'"
-        flatpak override --user --filesystem=xdg-config/gtk-4.0:ro
-        flatpak override --user --filesystem=xdg-config/gtk-3.0:ro
-        mkdir -p "$HOME/.config" && touch "$MARKER"
-        echo "[GNOME First Login] Done."
-        SCRIPTEND
-      - chmod +x /usr/local/bin/gnome-first-login.sh
+      - mkdir -p /image-files
+      - cp includes.container/files/* /image-files/ || true
+      - chmod +x /image-files/keybindings-features.sh || true
 
-  - name: create-first-login-service
-    type: shell
-    commands:
-      - mkdir -p /etc/skel/.config/systemd/user/default.target.wants
-      - |
-        cat > /etc/skel/.config/systemd/user/gnome-first-login.service << 'SERVICEEND'
-        [Unit]
-        Description=GNOME first login configuration
-        After=graphical-session.target
-        [Service]
-        Type=oneshot
-        ExecStart=/usr/local/bin/gnome-first-login.sh
-        ConditionPathExists=!%h/.config/.gnome-first-login-done
-        [Install]
-        WantedBy=default.target
-        SERVICEEND
-      - ln -sf ../gnome-first-login.service /etc/skel/.config/systemd/user/default.target.wants/gnome-first-login.service
+  - name: local-remote-modules
+    type: includes
+    includes:
+      - modules/50-install-debs.yml # Sample local module present in this repository
+      # - gh:vanilla-os/dev-image:main:modules/00-basics.yml # Sample GitHub remote module in the format: `gh:your-name/your-repo:branch:modules/file.yml`
+      # - https://raw.githubusercontent.com/Vanilla-OS/dev-image/main/modules/05-go.yml # Sample full URL remote module
 
   - name: set-image-name-abroot
     type: includes
