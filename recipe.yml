@@ -1,13 +1,13 @@
-name: Custom Vanilla Desktop # Replace this name with your image name
-id: custom # Replace this ID with your image ID
+name: Cyberbessa Vanilla Desktop 
+id: ID01
 stages:
 - id: build
-  base: ghcr.io/vanilla-os/desktop:main # Optionally, Replace this image URL with a different one i.e. nvidia:main, etc
+  base: ghcr.io/vanilla-os/desktop:main
   singlelayer: false
   labels:
-    maintainer: self-maintained # Optionally, Replace this with your name
+    maintainer: self-maintained
   args:
-    DEBIAN_FRONTEND: noninteractive # Set the image environment as non-interactive
+    DEBIAN_FRONTEND: noninteractive
   
   # Commands to run first before building the modules
   runs:
@@ -23,25 +23,91 @@ stages:
 
   # Put your custom actions below this comment
 
-  - name: example-packages # Sample module using the built-in Apt module to install packages
+  - name: basic-packages # Sample module using the built-in Apt module to install packages
     type: apt
     source:
       packages:
-      - vim
+      - fastfetch
+      - btop
+      - curl
+      - wget
+      - zip
+      - git
+      - gnome-tweaks
 
-  - name: example-commands # Sample module demonstrating the Shell module with custom commands
+  - name: flatpaks # Sample module using the built-in Apt module to install packages
+    type: flatpak
+      system:
+        repourl: "https://flathub.org/repo/flathub.flatpakrepo"
+        reponame: "flathub"
+        install:
+          - "io.github.ungoogled_software.ungoogled_chromium"
+          - "org.gnome.gitlab.somas.Apostrophe"
+          - "app.zen_browser.zen"
+          - "com.slack.Slack"
+          - "com.discordapp.Discord"
+          - "it.mijorus.smile"
+          - "be.alexandervanhee.gradia"
+          - "com.vscodium.codium"
+          - "eu.betterbird.Betterbird"
+          - "com.bitwarden.desktop"
+          - "io.github.pwr_solaar.solaar"
+          - "dev.deedles.Trayscale"
+          - "com.spotify.Client"
+          - "com.surfshark.Surfshark"
+          - "com.github.jkotra.eovpn"
+          - "org.onlyoffice.desktopeditors"
+          - "io.missioncenter.MissionCenter"
+          - "app.drey.Warp"
+          - "com.mattjakeman.ExtensionManager"
+          - "io.github.vikdevelop.SaveDesktop"
+          - "org.mozilla.firefox"
+          - "com.usebottles.bottles"
+          - "io.github.swordpuffin.rewaita"
+     
+
+  - name: keybindings-and-adjustments
     type: shell
     commands:
-    - echo Example output
 
-  - name: example-modules # Sample module demonstrating importing local and remote modules
-    type: includes
-    includes:
-      - modules/50-install-debs.yml # Sample local module present in this repository
-      # - gh:vanilla-os/dev-image:main:modules/00-basics.yml # Sample GitHub remote module in the format: `gh:your-name/your-repo:branch:modules/file.yml`
-      # - https://raw.githubusercontent.com/Vanilla-OS/dev-image/main/modules/05-go.yml # Sample full URL remote module
+      # Enabling Fractional Scaling
+      - "gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']""
 
-  # Put your custom actions above this comment
+      # Close Window Keybind
+      - "dconf write /org/gnome/desktop/wm/keybindings/close "['<Super>q', '<Alt>F4']""
+
+      # Declare Custom Keybindings
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']""
+
+      # Nautilus File Manager Keybind
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Nautilus'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'nautilus --new-window'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Super>e'""
+
+      # Ptyxis Terminal Keybind
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Blackbox Terminal'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'blackbox-terminal'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding "'<Super>t'""
+
+      # Emojis Keybind
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Emojis'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'flatpak run it.mijorus.smile'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Super>.'""
+
+      # Gradia Screenshot Utility Keybind
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name "'Gradia Screenshot Utility'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command "'flatpak run be.alexandervanhee.gradia --screenshot'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Super>Print'""
+
+      # Firefox Browser Keybinding
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name "'Firefox'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command "'flatpak run org.mozilla.firefox'""
+      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding "'<Super>w'""
+
+      # Allow Rewaita to Apps
+      - "flatpak override --user --filesystem=xdg-config/gtk-4.0:ro"
+      - "flatpak override --user --filesystem=xdg-config/gtk-3.0:ro"
+
 
   - name: set-image-name-abroot
     type: includes
