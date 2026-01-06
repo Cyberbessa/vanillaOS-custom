@@ -71,42 +71,42 @@ stages:
     commands:
 
       # Enabling Fractional Scaling
-      - "gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']""
+      - 'gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"'
 
       # Close Window Keybind
-      - "dconf write /org/gnome/desktop/wm/keybindings/close "['<Super>q', '<Alt>F4']""
+      - 'dconf write /org/gnome/desktop/wm/keybindings/close "['<Super>q', '<Alt>F4']"'
 
       # Declare Custom Keybindings
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']""
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']"'
 
       # Nautilus File Manager Keybind
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Nautilus'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'nautilus --new-window'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Super>e'""
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name "'Nautilus'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command "'nautilus --new-window'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding "'<Super>e'"'
 
       # Ptyxis Terminal Keybind
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Blackbox Terminal'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'blackbox-terminal'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding "'<Super>t'""
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name "'Blackbox Terminal'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command "'blackbox-terminal'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding "'<Super>t'"'
 
       # Emojis Keybind
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Emojis'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'flatpak run it.mijorus.smile'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Super>.'""
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name "'Emojis'""
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command "'flatpak run it.mijorus.smile'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding "'<Super>.'"'
 
       # Gradia Screenshot Utility Keybind
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name "'Gradia Screenshot Utility'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command "'flatpak run be.alexandervanhee.gradia --screenshot'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Super>Print'""
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name "'Gradia Screenshot Utility'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command "'flatpak run be.alexandervanhee.gradia --screenshot'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding "'<Super>Print'"'
 
       # Firefox Browser Keybinding
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name "'Firefox'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command "'flatpak run org.mozilla.firefox'""
-      - "dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding "'<Super>w'""
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name "'Firefox'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command "'flatpak run org.mozilla.firefox'"'
+      - 'dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding "'<Super>w'"'
 
       # Allow Rewaita to Apps
-      - "flatpak override --user --filesystem=xdg-config/gtk-4.0:ro"
-      - "flatpak override --user --filesystem=xdg-config/gtk-3.0:ro"
+      - 'flatpak override --user --filesystem=xdg-config/gtk-4.0:ro'
+      - 'flatpak override --user --filesystem=xdg-config/gtk-3.0:ro'
 
 
   - name: set-image-name-abroot
