@@ -1,5 +1,5 @@
-name: cyberbessa
-id: desktop
+name: Cyberbessa Vanilla Desktop 
+id: ID01
 stages:
 - id: build
   base: ghcr.io/vanilla-os/desktop:main
@@ -23,7 +23,7 @@ stages:
 
   # Put your custom actions below this comment
 
-  - name: basic-packages # Sample module using the built-in Apt module to install packages
+  - name: basic-packages 
     type: apt
     source:
       packages:
@@ -35,35 +35,35 @@ stages:
       - git
       - gnome-tweaks
 
-  - name: flatpaks # Sample module using the built-in Apt module to install packages
+  - name: flatpaks 
     type: flatpak
-      system:
-        repourl: "https://flathub.org/repo/flathub.flatpakrepo"
-        reponame: "flathub"
-        install:
-          - "io.github.ungoogled_software.ungoogled_chromium"
-          - "org.gnome.gitlab.somas.Apostrophe"
-          - "app.zen_browser.zen"
-          - "com.slack.Slack"
-          - "com.discordapp.Discord"
-          - "it.mijorus.smile"
-          - "be.alexandervanhee.gradia"
-          - "com.vscodium.codium"
-          - "eu.betterbird.Betterbird"
-          - "com.bitwarden.desktop"
-          - "io.github.pwr_solaar.solaar"
-          - "dev.deedles.Trayscale"
-          - "com.spotify.Client"
-          - "com.surfshark.Surfshark"
-          - "com.github.jkotra.eovpn"
-          - "org.onlyoffice.desktopeditors"
-          - "io.missioncenter.MissionCenter"
-          - "app.drey.Warp"
-          - "com.mattjakeman.ExtensionManager"
-          - "io.github.vikdevelop.SaveDesktop"
-          - "org.mozilla.firefox"
-          - "com.usebottles.bottles"
-          - "io.github.swordpuffin.rewaita"
+    system:
+      repourl: "https://flathub.org/repo/flathub.flatpakrepo"
+      reponame: "flathub"
+      install:
+        - "io.github.ungoogled_software.ungoogled_chromium"
+        - "org.gnome.gitlab.somas.Apostrophe"
+        - "app.zen_browser.zen"
+        - "com.slack.Slack"
+        - "com.discordapp.Discord"
+        - "it.mijorus.smile"
+        - "be.alexandervanhee.gradia"
+        - "com.vscodium.codium"
+        - "eu.betterbird.Betterbird"
+        - "com.bitwarden.desktop"
+        - "io.github.pwr_solaar.solaar"
+        - "dev.deedles.Trayscale"
+        - "com.spotify.Client"
+        - "com.surfshark.Surfshark"
+        - "com.github.jkotra.eovpn"
+        - "org.onlyoffice.desktopeditors"
+        - "io.missioncenter.MissionCenter"
+        - "app.drey.Warp"
+        - "com.mattjakeman.ExtensionManager"
+        - "io.github.vikdevelop.SaveDesktop"
+        - "org.mozilla.firefox"
+        - "com.usebottles.bottles"
+        - "io.github.swordpuffin.rewaita"
      
 
   - name: keybindings-and-adjustments
