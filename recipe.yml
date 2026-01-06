@@ -88,7 +88,7 @@ stages:
       # Close window keybind
       dconf write /org/gnome/desktop/wm/keybindings/close "['<Super>q', '<Alt>F4']"
 
-      # Fixed: Declare custom keybindings (single line for shell compatibility)
+      # Declare custom keybindings
       dconf write /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']"
 
       # Nautilus
@@ -126,7 +126,7 @@ stages:
       echo "[GNOME First Login] Configuration applied successfully."
       EOF
 
-    - |
+
       install -Dm644 /dev/stdin /etc/skel/.config/systemd/user/gnome-first-login.service << 'EOF'
       [Unit]
       Description=GNOME first login user configuration
@@ -140,10 +140,6 @@ stages:
       [Install]
       WantedBy=default.target
       EOF
-
-    # Fixed: Enable the systemd service globally for all new users
-    - mkdir -p /etc/skel/.config/systemd/user/default.target.wants
-    - ln -sf /etc/skel/.config/systemd/user/gnome-first-login.service /etc/skel/.config/systemd/user/default.target.wants/gnome-first-login.service
 
 
 
