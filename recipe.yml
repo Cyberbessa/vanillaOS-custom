@@ -1,5 +1,5 @@
-name: Cyberbessa Vanilla Desktop 
-id: ID01
+name: cyberbessa
+id: VOSPWM
 stages:
 - id: build
   base: ghcr.io/vanilla-os/desktop:main
