@@ -34,6 +34,7 @@ stages:
         - zip
         - git
         - gnome-tweaks
+        - open-vm-tools # Optional for VM
 
   - name: install-flatpaks
     type: flatpak
@@ -64,6 +65,11 @@ stages:
         - "org.mozilla.firefox"
         - "com.usebottles.bottles"
         - "io.github.swordpuffin.rewaita"
+
+  - name: copy-files
+    type: includes
+    includes:
+      - modules/copy-files.yml
 
   - name: local-remote-modules
     type: includes
