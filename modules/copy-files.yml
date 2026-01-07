@@ -1,0 +1,6 @@
+name: copy-files
+type: shell
+commands:
+  - mkdir -p /usr/share/img-files/
+  - cp /files/* /usr/share/img-files/
+  - rm -rf /files
